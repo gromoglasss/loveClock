@@ -2,6 +2,8 @@ const monthsEl = document.getElementById("months");
 const daysEl = document.getElementById("days");
 const minutesEl = document.getElementById("minutes");
 const secondsEl = document.getElementById("seconds");
+const loveMessageEl = document.getElementById("loveMessage");
+
 
 const playerEl = document.getElementById("player");
 const countdownEl = document.getElementById("countdown");
@@ -26,6 +28,14 @@ function startCountdown() {
       playerEl.classList.remove("hidden");
       return;
     }
+
+    if (diff <= 0) {
+        countdownEl.style.display = "none";
+        loveMessageEl.style.display = "none";
+        playerEl.classList.remove("hidden");
+        return;
+    }
+
 
     const totalSeconds = Math.floor(diff / 1000);
 
