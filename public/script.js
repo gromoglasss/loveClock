@@ -2,49 +2,67 @@ const monthsEl = document.getElementById("months");
 const daysEl = document.getElementById("days");
 const minutesEl = document.getElementById("minutes");
 const secondsEl = document.getElementById("seconds");
-const loveMessageEl = document.getElementById("loveMessage");
-
 
 const playerEl = document.getElementById("player");
 const countdownEl = document.getElementById("countdown");
+const loveMessageEl = document.getElementById("loveMessage");
 
-let unlockDate;
-
-// Get unlock date from server
+// Fetch unlock date from server
 fetch("/api/unlock-status")
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to fetch unlock date");
+    return res.json();
+  })
   .then(data => {
-    unlockDate = new Date(data.unlockDate);
-    startCountdown();
+    const unlockDate = new Date(data.unlockDate);
+    startCountdown(unlockDate);
+  })
+  .catch(err => {
+    console.error("Error:", err);
   });
 
-function startCountdown() {
+function startCountdown(unlockDate) {
   setInterval(() => {
-    const now = new Date();
-    const diff = unlockDate - now;
 
-    if (diff <= 0) {
+    const now = new Date();
+
+    if (now >= unlockDate) {
       countdownEl.style.display = "none";
+      if (loveMessageEl) loveMessageEl.style.display = "none";
       playerEl.classList.remove("hidden");
       return;
     }
 
-    if (diff <= 0) {
-        countdownEl.style.display = "none";
-        loveMessageEl.style.display = "none";
-        playerEl.classList.remove("hidden");
-        return;
+    // Accurate calendar difference
+    let years = unlockDate.getFullYear() - now.getFullYear();
+    let months = unlockDate.getMonth() - now.getMonth();
+    let days = unlockDate.getDate() - now.getDate();
+    let minutes = unlockDate.getMinutes() - now.getMinutes();
+    let seconds = unlockDate.getSeconds() - now.getSeconds();
+
+    if (seconds < 0) {
+      seconds += 60;
+      minutes--;
     }
 
+    if (minutes < 0) {
+      minutes += 60;
+    }
 
-    const totalSeconds = Math.floor(diff / 1000);
+    if (days < 0) {
+      const prevMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      days += prevMonth.getDate();
+      months--;
+    }
 
-    const months = Math.floor(totalSeconds / (30 * 24 * 60 * 60));
-    const days = Math.floor((totalSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-    const seconds = totalSeconds % 60;
+    if (months < 0) {
+      months += 12;
+      years--;
+    }
 
-    monthsEl.textContent = months;
+    const totalMonths = years * 12 + months;
+
+    monthsEl.textContent = totalMonths;
     daysEl.textContent = days;
     minutesEl.textContent = minutes;
     secondsEl.textContent = seconds;
