@@ -86,7 +86,6 @@ audio {
 
 
 .love-message {
-  margin-top: 40px;
   font-size: 1rem;
   color: white;
   opacity: 0.9;
@@ -95,6 +94,7 @@ audio {
   text-align: center;
   animation: fadeIn 2s ease forwards;
 }
+
 
 @keyframes fadeIn {
   from {
