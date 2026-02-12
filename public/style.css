@@ -6,7 +6,8 @@ body {
   align-items: center;
   font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
-  background: url("background.jpg") center/cover no-repeat;
+  background: url("./background.jpg") center/cover no-repeat;
+
 }
 
 .overlay {
