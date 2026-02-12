@@ -4,33 +4,71 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
-
-  background: linear-gradient(-45deg, #ffd6e8, #fff0f6, #ffe6f0, #ffffff);
-  background-size: 400% 400%;
-  animation: gradientFlow 15s ease infinite;
+  background: url("background.jpg") center/cover no-repeat;
 }
 
-@keyframes gradientFlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(255,255,255,0.25);
 }
 
 .container {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  padding: 24px;
 }
 
-#countdown {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: #222;
+.countdown {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.time-box {
+  width: 110px;
+  height: 130px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.time-box:hover {
+  transform: translateY(-5px);
+}
+
+.number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.label {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+/* Number change animation */
+.flip {
+  transform: translateY(-10px);
+  opacity: 0.5;
 }
 
 audio {
-  width: min(360px, 80vw);
+  margin-top: 40px;
+  width: 300px;
 }
 
 .hidden {

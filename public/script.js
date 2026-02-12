@@ -1,13 +1,26 @@
 async function init() {
   const res = await fetch("/api/unlock-status");
   const data = await res.json();
-
   const unlockDate = new Date(data.unlockDate);
-  const countdownEl = document.getElementById("countdown");
+
+  const monthsEl = document.getElementById("months");
+  const daysEl = document.getElementById("days");
+  const minutesEl = document.getElementById("minutes");
+  const secondsEl = document.getElementById("seconds");
   const playerEl = document.getElementById("player");
 
+  function updateNumber(el, newValue) {
+    if (el.textContent !== newValue.toString()) {
+      el.classList.add("flip");
+      setTimeout(() => {
+        el.textContent = newValue;
+        el.classList.remove("flip");
+      }, 200);
+    }
+  }
+
   if (data.unlocked) {
-    countdownEl.textContent = "It's time 🤍";
+    document.querySelector(".countdown").style.display = "none";
     playerEl.classList.remove("hidden");
     return;
   }
@@ -23,7 +36,11 @@ async function init() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    countdownEl.textContent = `${months} mo, ${days} days, ${minutes} min, ${seconds}s`;
+    updateNumber(monthsEl, months);
+    updateNumber(daysEl, days);
+    updateNumber(minutesEl, minutes);
+    updateNumber(secondsEl, seconds);
+
   }, 1000);
 }
 

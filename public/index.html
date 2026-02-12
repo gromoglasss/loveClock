@@ -7,16 +7,43 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <div id="countdown">Loading…</div>
 
-    <div id="player" class="hidden">
-      <audio controls>
-        <source src="message.mp3" type="audio/mpeg" />
-      </audio>
+<div class="overlay"></div>
+
+<div class="container">
+
+  <div id="countdown" class="countdown">
+
+    <div class="time-box">
+      <div id="months" class="number">0</div>
+      <div class="label">Months</div>
     </div>
+
+    <div class="time-box">
+      <div id="days" class="number">0</div>
+      <div class="label">Days</div>
+    </div>
+
+    <div class="time-box">
+      <div id="minutes" class="number">0</div>
+      <div class="label">Minutes</div>
+    </div>
+
+    <div class="time-box">
+      <div id="seconds" class="number">0</div>
+      <div class="label">Seconds</div>
+    </div>
+
   </div>
 
-  <script src="script.js"></script>
+  <div id="player" class="hidden">
+    <audio controls>
+      <source src="message.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
