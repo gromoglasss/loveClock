@@ -1,34 +1,43 @@
-let unlocked = false;
+const monthsEl = document.getElementById("months");
+const daysEl = document.getElementById("days");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
 
+const playerEl = document.getElementById("player");
+const countdownEl = document.getElementById("countdown");
 
-setInterval(() => {
-  const now = new Date();
-  const diff = unlockDate - now;
+let unlockDate;
 
-  if (diff <= 0) {
-    document.querySelector(".countdown").style.display = "none";
-    playerEl.classList.remove("hidden");
-    return;
-  }
+// Get unlock date from server
+fetch("/api/unlock-status")
+  .then(res => res.json())
+  .then(data => {
+    unlockDate = new Date(data.unlockDate);
+    startCountdown();
+  });
 
-  const totalSeconds = Math.floor(diff / 1000);
+function startCountdown() {
+  setInterval(() => {
+    const now = new Date();
+    const diff = unlockDate - now;
 
-  const months = Math.floor(totalSeconds / (30 * 24 * 60 * 60));
-  const days = Math.floor((totalSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
-  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-  const seconds = totalSeconds % 60;
+    if (diff <= 0) {
+      countdownEl.style.display = "none";
+      playerEl.classList.remove("hidden");
+      return;
+    }
 
-  updateNumber(monthsEl, months);
-  updateNumber(daysEl, days);
-  updateNumber(minutesEl, minutes);
-  updateNumber(secondsEl, seconds);
+    const totalSeconds = Math.floor(diff / 1000);
 
-  if (diff <= 0 && !unlocked) {
-  unlocked = true;
-  document.querySelector(".countdown").style.display = "none";
-  playerEl.classList.remove("hidden");
-  return;
+    const months = Math.floor(totalSeconds / (30 * 24 * 60 * 60));
+    const days = Math.floor((totalSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const seconds = totalSeconds % 60;
+
+    monthsEl.textContent = months;
+    daysEl.textContent = days;
+    minutesEl.textContent = minutes;
+    secondsEl.textContent = seconds;
+
+  }, 1000);
 }
-
-
-}, 1000);
